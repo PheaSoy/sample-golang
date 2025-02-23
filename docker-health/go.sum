@@ -1,0 +1,4 @@
+github.com/docker/docker v20.10.24+incompatible h1:Ugvxm7a8+Gz6vqQYQQ2W7GYq5EUPaAiuPgIfVyI3dYE=
+github.com/docker/docker v20.10.24+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/moby/moby v28.0.0+incompatible h1:D+F1Z56b/DS8J5pUkTG/stemqrvHBQ006hUqJxjV9P0=
+github.com/moby/moby v28.0.0+incompatible/go.mod h1:fDXVQ6+S340veQPv35CzDahGBmHsiclFwfEygB/TWMc=
