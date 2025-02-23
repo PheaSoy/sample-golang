@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/apimachinery/pkg/watch"
-	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/api/core/v1"          // This is required for Pod
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1" // Import metav1 correctly
 	"github.com/slack-go/slack"
 )
 
@@ -21,9 +21,11 @@ func main() {
 	kubeconfig := flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	flag.Parse()
 
-	config, err := rest.InClusterConfig() // For in-cluster execution
+	// First try to load in-cluster config
+	config, err := rest.InClusterConfig()
 	if err != nil {
-		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig) // For local execution
+		// Fallback to kubeconfig if not running inside Kubernetes
+		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
 		if err != nil {
 			log.Fatalf("Failed to load kubeconfig: %v", err)
 		}
@@ -39,7 +41,8 @@ func main() {
 }
 
 func watchPods(clientset *kubernetes.Clientset) {
-	watcher, err := clientset.CoreV1().Pods("").Watch(context.TODO(), v1.ListOptions{})
+	// Watch for changes in pods
+	watcher, err := clientset.CoreV1().Pods("").Watch(context.TODO(), metav1.ListOptions{}) // Use metav1.ListOptions
 	if err != nil {
 		log.Fatalf("Failed to watch pods: %v", err)
 	}
